@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!--
+    =========================================================
+    TypeRush - Typing Speed Test Application
+    =========================================================
+    Features:
+    - Difficulty levels (Easy / Medium / Hard)
+    - Multiple timer modes (30 / 60 / 120 sec)
+    - Live WPM, Accuracy, Errors
+    - Real-time character highlighting
+    - Result screen with performance label
+    - Back navigation between screens
+    - Best score saved using localStorage
+    =========================================================
+  -->
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>TypeRush | Typing Speed Test</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #0f172a;
+      color: white;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .correct {
+      color: #22c55e;
+    }
+
+    .wrong {
+      background: #ef4444;
+      color: white;
+      border-radius: 4px;
+    }
+
+    .current {
+      border-bottom: 2px solid #facc15;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        border-color: transparent;
+      }
+    }
+
+    textarea::-webkit-scrollbar {
+      display: none;
+    }
+
+    .card-transition {
+      transition: all 0.3s ease;
+    }
+
+  </style>
+
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-4">
+
+  <div class="w-full max-w-6xl">
+
+    <!-- ========================================================= -->
+    <!-- HOME SCREEN -->
+    <!-- ========================================================= -->
+
+    <section
+      id="homeScreen"
+      class="bg-slate-900 border border-slate-800 rounded-3xl p-8 md:p-12 shadow-2xl"
+    >
+
+      <div class="text-center">
+
+        <h1 class="text-5xl md:text-7xl font-bold mb-4">
+          TypeRush
+        </h1>
+
+        <p class="text-slate-400 text-lg md:text-xl mb-12">
+          Improve your typing speed with live feedback and real-time analysis.
+        </p>
+
+        <!-- Difficulty -->
+        <div class="max-w-md mx-auto mb-6 text-left">
+
+          <label class="block mb-3 text-slate-300 font-medium">
+            Select Difficulty
+          </label>
+
+          <select
+            id="difficultySelect"
+            class="w-full bg-slate-800 border border-slate-700 rounded-2xl p-4 outline-none focus:border-blue-500"
+          >
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+
+        </div>
+
+        <!-- Timer -->
+        <div class="max-w-md mx-auto mb-10 text-left">
+
+          <label class="block mb-3 text-slate-300 font-medium">
+            Select Time
+          </label>
+
+          <select
+            id="timeSelect"
+            class="w-full bg-slate-800 border border-slate-700 rounded-2xl p-4 outline-none focus:border-blue-500"
+          >
+            <option value="30">30 Seconds</option>
+            <option value="60" selected>60 Seconds</option>
+            <option value="120">120 Seconds</option>
+          </select>
+
+        </div>
+
+        <!-- Start Button -->
+        <button
+          id="startBtn"
+          class="bg-blue-600 hover:bg-blue-700 transition px-10 py-4 rounded-2xl text-lg font-semibold"
+        >
+          Start Test
+        </button>
+
+        <!-- Best Score -->
+        <div class="mt-12 text-slate-400 text-lg">
+
+          Best WPM:
+          <span
+            id="bestScore"
+            class="text-green-400 font-bold text-2xl"
+          >
+            0
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- TEST SCREEN -->
+    <!-- ========================================================= -->
+
+    <section
+      id="testScreen"
+      class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-10 shadow-2xl"
+    >
+
+      <!-- Stats -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+
+        <div class="bg-slate-800 rounded-2xl p-5 text-center card-transition">
+
+          <p class="text-slate-400 mb-2 text-sm">
+            Time Left
+          </p>
+
+          <h2
+            id="timer"
+            class="text-4xl font-bold text-blue-400"
+          >
+            60
+          </h2>
+
+        </div>
+
+        <div class="bg-slate-800 rounded-2xl p-5 text-center card-transition">
+
+          <p class="text-slate-400 mb-2 text-sm">
+            WPM
+          </p>
+
+          <h2
+            id="wpm"
+            class="text-4xl font-bold"
+          >
+            0
+          </h2>
+
+        </div>
+
+        <div class="bg-slate-800 rounded-2xl p-5 text-center card-transition">
+
+          <p class="text-slate-400 mb-2 text-sm">
+            Accuracy
+          </p>
+
+          <h2
+            id="accuracy"
+            class="text-4xl font-bold"
+          >
+            100%
+          </h2>
+
+        </div>
+
+        <div class="bg-slate-800 rounded-2xl p-5 text-center card-transition">
+
+          <p class="text-slate-400 mb-2 text-sm">
+            Errors
+          </p>
+
+          <h2
+            id="errors"
+            class="text-4xl font-bold text-red-400"
+          >
+            0
+          </h2>
+
+        </div>
+
+      </div>
+
+      <!-- Paragraph -->
+      <div
+        id="paragraph"
+        class="mono bg-slate-950 border border-slate-800 rounded-2xl p-6 text-lg md:text-xl leading-10 min-h-[250px]"
+      ></div>
+
+      <!-- Input -->
+      <textarea
+        id="typingInput"
+        class="w-full mt-6 bg-slate-800 border border-slate-700 rounded-2xl p-5 outline-none focus:border-blue-500 resize-none h-40 text-lg"
+        placeholder="Start typing here..."
+      ></textarea>
+
+      <!-- Buttons -->
+      <div class="flex flex-wrap gap-4 mt-6">
+
+        <button
+          id="restartBtn"
+          class="bg-red-500 hover:bg-red-600 transition px-6 py-3 rounded-xl font-semibold"
+        >
+          Restart
+        </button>
+
+        <button
+          id="backBtn"
+          class="bg-slate-700 hover:bg-slate-600 transition px-6 py-3 rounded-xl font-semibold"
+        >
+          Back
+        </button>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- RESULT SCREEN -->
+    <!-- ========================================================= -->
+
+    <section
+      id="resultScreen"
+      class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-8 md:p-12 shadow-2xl text-center"
+    >
+
+      <h2 class="text-5xl font-bold mb-3">
+        Test Complete
+      </h2>
+
+      <p class="text-slate-400 text-lg mb-12">
+        Your typing performance analysis
+      </p>
+
+      <!-- Result Cards -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mb-10">
+
+        <div class="bg-slate-800 rounded-2xl p-5">
+
+          <p class="text-slate-400 mb-2">
+            Final WPM
+          </p>
+
+          <h3
+            id="finalWPM"
+            class="text-4xl font-bold text-green-400"
+          >
+            0
+          </h3>
+
+        </div>
+
+        <div class="bg-slate-800 rounded-2xl p-5">
+
+          <p class="text-slate-400 mb-2">
+            Accuracy
+          </p>
+
+          <h3
+            id="finalAccuracy"
+            class="text-4xl font-bold"
+          >
+            0%
+          </h3>
+
+        </div>
+
+        <div class="bg-slate-800 rounded-2xl p-5">
+
+          <p class="text-slate-400 mb-2">
+            Characters
+          </p>
+
+          <h3
+            id="finalCharacters"
+            class="text-4xl font-bold"
+          >
+            0
+          </h3>
+
+        </div>
+
+        <div class="bg-slate-800 rounded-2xl p-5">
+
+          <p class="text-slate-400 mb-2">
+            Errors
+          </p>
+
+          <h3
+            id="finalErrors"
+            class="text-4xl font-bold text-red-400"
+          >
+            0
+          </h3>
+
+        </div>
+
+      </div>
+
+      <!-- Performance -->
+      <div class="mb-12">
+
+        <p class="text-slate-400 mb-3">
+          Performance Level
+        </p>
+
+        <h3
+          id="performanceLabel"
+          class="text-5xl font-bold text-yellow-400"
+        >
+          Beginner
+        </h3>
+
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex flex-wrap justify-center gap-4">
+
+        <button
+          id="tryAgainBtn"
+          class="bg-blue-600 hover:bg-blue-700 transition px-6 py-3 rounded-xl font-semibold"
+        >
+          Try Again
+        </button>
+
+        <button
+          id="newParagraphBtn"
+          class="bg-slate-700 hover:bg-slate-600 transition px-6 py-3 rounded-xl font-semibold"
+        >
+          New Paragraph
+        </button>
+
+        <button
+          id="resultBackBtn"
+          class="bg-red-500 hover:bg-red-600 transition px-6 py-3 rounded-xl font-semibold"
+        >
+          Back Home
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <script>
+
+    // =========================================================
+    // PARAGRAPH DATA
+    // =========================================================
+
+    const paragraphs = {
+
+      easy: {
+
+        30: [
+           "Typing every day improves speed and accuracy over time. Consistent practice helps students become more comfortable using the keyboard while developing better focus and confidence during coding sessions.",
+
+  "JavaScript allows developers to build interactive and dynamic websites for users. Learning through projects helps beginners improve problem solving skills and understand frontend development concepts more clearly.",
+
+  "Frontend development combines creativity and logical thinking to build responsive web applications. Developers use HTML CSS and JavaScript to create smooth and user friendly digital experiences.",
+
+  "Coding regularly helps students improve technical knowledge and typing efficiency. Small improvements made every day can lead to stronger programming skills and better confidence during interviews.",
+
+  "Web developers create modern applications that work across desktop and mobile devices. Writing clean code and practicing typing speed regularly helps improve overall productivity and development workflow.",
+
+  "Practice and consistency are important for becoming a better software developer. Building real projects and improving typing accuracy can help students perform better during technical assessments.",
+
+  "Responsive websites provide a better experience for users on different screen sizes and devices. Developers must write clean code and understand layout design principles while building applications.",
+
+  "Typing speed tests help users improve keyboard accuracy and increase productivity during programming tasks. Faster typing combined with problem solving skills is useful for software engineering roles.",
+
+  "Modern web applications use interactive features animations and responsive layouts to improve usability. Frontend developers focus on creating clean interfaces that provide smooth user experiences.",
+
+  "Learning programming requires patience regular practice and strong logical thinking skills. Students who build projects consistently improve their confidence and become better problem solvers over time."
+        ],
+
+     60: [
+  "Typing speed improves gradually when students practice consistently every day with focus and patience. Building small frontend projects using HTML CSS and JavaScript helps beginners understand web development concepts while also improving logical thinking and keyboard familiarity. Developers who practice regularly become faster at writing code debugging problems and completing tasks efficiently during interviews or assessments.",
+
+  "JavaScript is one of the most popular programming languages used in modern web development. It allows developers to create dynamic websites with interactive buttons animations forms and real time updates. Students who learn JavaScript through practical projects gain stronger problem solving skills and better confidence while building responsive applications for users across desktop and mobile devices.",
+
+  "Frontend developers create visually appealing and responsive interfaces that improve the overall user experience. They work with layouts colors typography navigation menus and interactive components to build modern websites. Consistent coding practice and regular typing exercises help developers improve productivity accuracy and speed while working on projects or solving programming challenges online.",
+
+  "Building projects regularly is one of the best ways for beginners to improve programming skills and gain practical experience. A typing speed test project teaches important JavaScript concepts such as DOM manipulation timers event handling and dynamic UI updates. These concepts are useful during technical interviews because they demonstrate logical thinking and frontend development abilities clearly.",
+
+  "Responsive web design helps websites adapt smoothly across different screen sizes devices and browsers. Developers use flexible layouts media queries and clean UI structures to ensure better accessibility and usability for users. Learning these concepts through hands on projects helps students become more confident while preparing for software engineering or frontend developer roles.",
+
+  "Typing accurately and quickly can improve productivity during coding sessions assignments and technical assessments. Developers often spend many hours writing code fixing bugs and reading documentation so efficient keyboard usage becomes an important skill over time. Regular typing practice combined with project building helps students become faster more focused and better prepared for interviews.",
+
+  "Modern web applications focus heavily on user experience performance and responsive design principles. Developers use JavaScript to create interactive functionality such as dropdown menus typing effects dark mode toggles and live search features. Building these features through personal projects strengthens problem solving skills and improves understanding of frontend application development.",
+
+  "Students preparing for software engineering roles should focus on improving both technical knowledge and practical development skills. Creating projects using HTML CSS and JavaScript provides hands on experience with real world concepts including event listeners timers local storage and DOM updates. These projects also make resumes stronger and help candidates stand out during interviews.",
+
+  "Learning web development requires consistency patience and continuous practice with coding concepts. Developers improve gradually by building projects experimenting with new ideas and solving problems independently. Working on typing speed applications quiz systems or interactive games helps beginners understand JavaScript logic while creating professional looking portfolio projects for GitHub and resumes.",
+
+  "Software developers build applications that solve real world problems and improve digital experiences for users. Frontend engineers focus on creating smooth responsive and interactive user interfaces using modern technologies and clean coding practices. Strong typing skills logical thinking and project experience are valuable qualities for students preparing for technical careers in software development."
+],
+
+        120: [
+  "Typing speed and accuracy improve significantly when students practice consistently with meaningful content and real world programming related paragraphs. Developers spend a large amount of time writing code reading documentation debugging applications and communicating with team members so efficient typing skills become extremely valuable over time. Practicing regularly with typing tests not only increases keyboard familiarity but also helps improve concentration confidence and productivity during coding sessions technical interviews and online assessments. Students who combine typing practice with hands on project development usually become more comfortable working with programming languages and frontend technologies while solving practical problems independently.",
+
+  "Frontend web development focuses on creating visually appealing responsive and user friendly interfaces that work smoothly across different devices and screen sizes. Developers use HTML to structure content CSS to design layouts and JavaScript to add interactivity and dynamic functionality to applications. Modern websites often include animations responsive navigation systems dark mode support form validation and real time updates to improve user engagement and accessibility. Building projects consistently helps students understand how different frontend concepts work together while also improving logical thinking problem solving ability and development confidence during practical implementation tasks.",
+
+  "JavaScript is one of the most powerful and widely used programming languages in modern software development because it allows developers to create highly interactive and dynamic web applications. Beginners often start by learning DOM manipulation event handling loops functions arrays and conditional statements before moving into more advanced topics such as asynchronous programming APIs and frameworks. Creating projects like typing speed tests quiz applications weather dashboards and task management systems helps students strengthen their understanding of JavaScript fundamentals while also improving their ability to write clean organized and reusable code for frontend applications.",
+
+  "Software engineering requires a combination of technical knowledge problem solving skills communication ability and continuous learning because technologies evolve rapidly in the modern development industry. Students preparing for software engineering roles should focus on building practical projects improving coding consistency understanding programming fundamentals and practicing technical interview questions regularly. Portfolio projects such as typing speed applications responsive websites quiz games and productivity tools help demonstrate creativity logical thinking and frontend development abilities clearly during recruitment processes. Consistent practice and project based learning can help beginners transition into confident developers over time.",
+
+  "Responsive web design is an essential part of frontend development because users access applications from mobile phones tablets laptops and desktop computers with different screen sizes and resolutions. Developers use flexible layouts CSS grid flexbox media queries and scalable components to ensure websites adapt correctly across multiple devices while maintaining readability usability and visual consistency. Learning responsive design principles through hands on project development allows students to gain practical experience while building applications that feel professional modern and user friendly for real world users and interview demonstrations.",
+
+  "Typing speed applications are excellent beginner projects because they combine multiple important JavaScript concepts into a single interactive project with real time functionality and visual feedback. Developers implement timers event listeners DOM updates accuracy calculations and dynamic character highlighting to create a complete user experience inside the browser. These projects also improve understanding of application state management user interaction handling and frontend logic building which are valuable skills for students preparing for software engineering trainee or frontend developer roles. A polished typing test project can become a strong addition to a resume portfolio or GitHub profile.",
+
+  "Building projects regularly is one of the fastest ways for students to improve programming knowledge and become more comfortable with real development workflows and coding practices. Instead of only watching tutorials or reading theory developers learn more effectively when they create applications independently debug issues experiment with features and improve user interfaces through repeated practice. Projects involving typing games quiz systems weather apps and responsive dashboards help strengthen JavaScript logic while also teaching developers how to organize code structure improve UI design and create smooth interactive experiences for users.",
+
+  "Modern web applications are designed with a strong focus on usability accessibility responsiveness and performance optimization because users expect fast and smooth digital experiences across all devices and browsers. Frontend developers often work on creating intuitive interfaces improving loading speed implementing interactive functionality and ensuring applications remain visually consistent under different conditions. Students who build practical frontend projects gain valuable experience with problem solving debugging layout management event handling and application flow which helps prepare them for internships technical interviews and entry level software engineering opportunities in the technology industry.",
+
+  "Consistency patience and continuous improvement are important qualities for anyone learning software development and preparing for technical careers in the technology industry. Beginners may initially struggle with debugging typing speed logical thinking or understanding programming concepts but regular practice gradually improves confidence and skill levels over time. Working on meaningful projects and challenging exercises helps students build stronger foundations in programming while also developing creativity discipline and independent learning ability. These habits become extremely useful during coding interviews online assessments and collaborative software development environments.",
+
+  "Web developers create applications that help users perform tasks communicate access information and interact with digital platforms more effectively in everyday life. Frontend engineers focus on designing clean interfaces implementing responsive layouts and creating engaging user experiences using technologies such as HTML CSS and JavaScript. Strong typing ability combined with coding practice logical reasoning and project development experience helps students become more productive and better prepared for real world software engineering responsibilities. Continuous learning and project based practice are key factors in becoming a successful developer in the modern technology field."
+]
+      },
+
+      medium: {
+
+       30: [
+  "JavaScript event listeners allow developers to build interactive web applications with dynamic user experiences and real time updates across multiple interface components.",
+
+  "Responsive frontend development requires proper layout structure reusable components and optimized styling techniques to ensure consistent performance across different devices.",
+
+  "DOM manipulation is an important JavaScript concept used to dynamically update webpage content handle user interactions and create interactive application features efficiently.",
+
+  "Frontend engineers frequently work with animations responsive layouts event handling and browser APIs to improve usability performance and accessibility in modern websites.",
+
+  "Building practical projects regularly helps developers improve logical thinking debugging ability and confidence while learning modern web development technologies effectively.",
+
+  "Typing speed and coding efficiency improve gradually through consistent practice project development and hands on experience with real world programming challenges daily.",
+
+  "Modern websites rely heavily on JavaScript functionality to create smooth navigation systems interactive forms dynamic dashboards and responsive user interface elements.",
+
+  "Web applications should provide fast performance responsive layouts and intuitive user experiences to ensure accessibility and usability for users across all devices.",
+
+  "Developers often debug asynchronous operations browser rendering issues and event driven interactions while building scalable and maintainable frontend applications professionally.",
+
+  "Frontend development combines problem solving creativity and technical implementation to design modern responsive interfaces that provide engaging digital experiences."
+],
+
+       60: [
+  "Modern frontend development requires a strong understanding of JavaScript event handling DOM manipulation responsive layouts and performance optimization techniques to create smooth and interactive user experiences across different devices and browsers. Developers who regularly build projects improve debugging skills logical thinking and overall development confidence over time.",
+
+  "JavaScript plays an important role in modern web applications because it enables developers to create interactive components dynamic content updates animations form validation and real time functionality directly inside the browser. Building practical projects using these concepts helps students strengthen frontend development skills and improve coding efficiency.",
+
+  "Responsive web applications must adapt correctly across desktop mobile and tablet devices while maintaining consistent layouts readability and usability. Frontend developers often use flexbox grid systems media queries and reusable UI components to ensure applications provide a professional and accessible user experience for all users.",
+
+  "Software engineers regularly solve technical problems involving browser rendering event driven programming asynchronous operations and application state management while developing scalable frontend systems. Consistent practice with coding challenges and real projects helps developers improve problem solving ability and technical confidence significantly.",
+
+  "Typing speed applications quiz systems dashboards and productivity tools are excellent JavaScript projects for beginners because they combine timers DOM updates event listeners local storage and dynamic user interfaces into practical real world applications that demonstrate strong frontend development fundamentals effectively.",
+
+  "Developers who focus on writing clean modular and maintainable code can improve project readability collaboration and long term scalability significantly. Organizing logic into reusable functions meaningful variables and structured application flow helps reduce bugs and improve development productivity during larger projects.",
+
+  "Frontend engineers are responsible for creating visually appealing responsive and interactive interfaces that improve digital experiences for users. They often work with animations transitions responsive navigation systems accessibility improvements and optimized layouts to ensure smooth application behavior across different environments.",
+
+  "Learning programming effectively requires patience consistency and project based practice because practical implementation helps students understand concepts more deeply than theory alone. Building applications independently allows developers to strengthen logical thinking debugging ability and confidence while preparing for technical interviews and assessments.",
+
+  "Modern web development involves combining design principles responsive layouts JavaScript functionality and performance optimization to create applications that are both visually appealing and technically efficient. Developers who continuously practice and experiment with projects gradually become more skilled at solving complex frontend challenges.",
+
+  "A strong portfolio project should demonstrate responsive UI design clean code structure real time interactivity and practical JavaScript concepts such as event handling timers state management and dynamic DOM updates. These projects help students showcase technical skills effectively during recruitment and interview processes."
+],
+
+        120: [
+  "Modern frontend engineering involves much more than designing visually appealing user interfaces because developers must also focus on performance optimization accessibility responsive layouts scalability and maintainable architecture while building applications for real world users. JavaScript plays a critical role in creating dynamic experiences through event driven interactions asynchronous functionality animations state management and live content updates that improve usability across desktop mobile and tablet devices. Developers who regularly build projects and practice problem solving gradually strengthen their debugging ability logical thinking and overall confidence while working on complex frontend systems and modern web applications.",
+
+  "Software developers frequently work with responsive design principles browser rendering optimization event handling asynchronous JavaScript operations and reusable UI structures to create smooth and efficient applications that provide better user experiences across multiple environments. Building practical projects such as typing speed tests quiz systems productivity dashboards and interactive applications helps students understand real development workflows while improving technical implementation skills debugging strategies and frontend architecture knowledge. Consistent project based learning also helps beginners become more comfortable solving technical challenges independently during internships coding assessments and software engineering interviews.",
+
+  "Frontend development requires a balance between creativity technical implementation and problem solving because developers are responsible for designing interfaces that are visually engaging responsive accessible and easy to use for a wide range of users and devices. Modern applications often include advanced functionality such as animations dark mode systems dynamic rendering responsive navigation and real time updates which require strong understanding of JavaScript DOM manipulation browser events and optimized application flow. Developers who consistently improve their coding practices and project quality gradually become more efficient at building scalable and maintainable frontend systems professionally.",
+
+  "Modern web applications rely heavily on JavaScript functionality to provide interactive and responsive user experiences that feel smooth efficient and visually polished across different browsers and devices. Frontend engineers implement reusable components responsive layouts asynchronous features accessibility improvements and performance optimization techniques to ensure applications remain stable scalable and user friendly under varying conditions. Building projects regularly helps developers strengthen logical reasoning debugging ability and coding efficiency while gaining practical experience with real world development scenarios and frontend engineering concepts used in the software industry today.",
+
+  "Learning software development effectively requires consistency patience practical implementation and continuous improvement because theoretical knowledge alone is not enough to build strong technical skills or real problem solving ability. Students preparing for frontend or software engineering roles should focus on building meaningful projects improving code quality practicing debugging and understanding application structure deeply through hands on development experience. Projects such as responsive websites typing speed applications dashboards and productivity tools demonstrate important concepts including event listeners state management timers local storage and dynamic DOM manipulation which are valuable during technical interviews and portfolio evaluations.",
+
+  "Responsive web design has become an essential part of modern frontend engineering because users access applications from mobile phones tablets laptops and desktop systems with different screen sizes resolutions and interaction methods. Developers use CSS grid flexbox media queries scalable layouts and adaptive design techniques to ensure applications maintain readability usability and consistent visual structure across all devices. Understanding responsive design principles and implementing them through practical projects helps developers create professional quality applications while improving frontend problem solving ability and technical confidence significantly over time.",
+
+  "Frontend developers frequently collaborate with designers backend engineers and product teams to create applications that combine strong functionality clean architecture and polished user experiences for real world business requirements and customer needs. This process often involves improving performance handling browser compatibility issues implementing accessibility standards optimizing rendering behavior and debugging asynchronous interactions inside complex applications. Developers who continuously practice coding and build increasingly challenging projects become more comfortable managing frontend complexity while strengthening both technical knowledge and professional development workflows used in modern software engineering environments.",
+
+  "Building high quality frontend projects requires attention to code organization reusable logic responsive layouts visual consistency and efficient event handling because modern applications are expected to provide fast and reliable experiences for users across different platforms and browsers. JavaScript allows developers to implement interactive features such as dynamic forms typing analysis systems animations live search functionality and dashboard updates which improve engagement and usability significantly. Students who create projects independently gain practical experience with debugging optimization application structure and UI development which helps prepare them for technical assessments internships and entry level software engineering opportunities.",
+
+  "Performance optimization is an important aspect of frontend development because poorly optimized applications can lead to slow rendering laggy interactions and reduced user satisfaction across different devices and internet conditions. Developers improve application performance by minimizing unnecessary DOM updates organizing reusable logic reducing rendering complexity and optimizing resource loading behavior inside applications. Understanding these concepts through practical development and experimentation helps students strengthen problem solving ability while learning how modern web applications are designed built and maintained efficiently in professional software engineering environments.",
+
+  "Professional software engineers continuously improve their technical skills communication ability and development workflows by building projects solving coding challenges exploring new technologies and learning from practical implementation experience regularly. Strong frontend development knowledge includes understanding JavaScript logic responsive design asynchronous programming accessibility optimization and browser behavior while also maintaining clean readable and scalable code architecture. Students who consistently practice typing speed coding efficiency and project development become more prepared for software engineering interviews technical assessments collaborative development environments and real world application building responsibilities within the technology industry."
+]
+      },
+
+      hard: {
+
+        30: [
+  "JavaScript developers debug API errors, optimize UI rendering, and manage async operations across multiple browser environments efficiently.",
+
+  "Frontend Engineers use HTML, CSS, JS, and responsive layouts to create scalable applications for desktop + mobile users daily.",
+
+  "Typing accuracy matters because even a small syntax mistake like ';', '{}', or '()' can break application functionality instantly.",
+
+  "Modern web apps include animations, dynamic dashboards, authentication systems, and real-time updates using JavaScript logic.",
+
+  "Developers often solve complex frontend issues involving event bubbling, async callbacks, DOM updates, and state handling logic.",
+
+  "Responsive UI design requires flexible layouts, optimized rendering, reusable components, and accessibility-focused development practices.",
+
+  "Software Engineers regularly work with APIs, browser events, localStorage, and asynchronous functions while building web platforms.",
+
+  "Building scalable applications involves debugging performance bottlenecks, reducing re-renders, and improving application architecture.",
+
+  "JavaScript frameworks improve frontend productivity, but strong DOM manipulation and problem-solving skills remain extremely important.",
+
+  "Efficient developers write clean reusable code, follow naming conventions, and maintain structured project workflows under deadlines."
+],
+
+       60: [
+  "Modern Frontend Engineers frequently debug asynchronous JavaScript operations, optimize rendering performance, and manage event-driven application states while building scalable web platforms for thousands of concurrent users across multiple devices + browsers.",
+
+  "Complex web applications require developers to handle API failures, browser inconsistencies, responsive UI behavior, authentication flows, and dynamic DOM updates while maintaining clean architecture, optimized performance, and reusable component structures efficiently.",
+
+  "Professional Software Engineers often work with async/await patterns, localStorage management, browser event propagation, form validation systems, and responsive layouts while debugging unpredictable edge-case scenarios under strict project deadlines.",
+
+  "Frontend development involves solving rendering bottlenecks, minimizing unnecessary reflows/repaints, improving accessibility standards, and implementing optimized JavaScript logic to ensure applications remain responsive, stable, and user-friendly across platforms.",
+
+  "Developers building production-grade applications regularly manage complex state updates, asynchronous API integrations, keyboard interactions, conditional rendering logic, and real-time user feedback systems inside highly interactive interfaces.",
+
+  "A single syntax mistake such as a missing ';', incorrect '{}', broken callback, or undefined variable can completely interrupt JavaScript execution and create difficult debugging situations inside large-scale frontend applications.",
+
+  "Modern UI systems rely heavily on responsive layouts, scalable design patterns, reusable utility classes, optimized animations, and efficient event-handling mechanisms to provide smooth digital experiences for end users worldwide.",
+
+  "Building high-performance frontend applications requires strong understanding of JavaScript execution flow, browser rendering cycles, memory optimization, asynchronous programming, and efficient DOM manipulation techniques under real-world constraints.",
+
+  "Software Engineers frequently refactor legacy codebases, optimize application performance metrics, improve accessibility compliance, and maintain scalable frontend architectures while collaborating with cross-functional development teams effectively.",
+
+  "Advanced frontend problem-solving often includes debugging race conditions, handling API latency issues, optimizing render pipelines, improving state synchronization, and managing complex user interactions across responsive application interfaces."
+],
+
+       120: [
+  "Modern Software Engineers frequently debug asynchronous JavaScript execution issues, optimize browser-rendering performance, manage API-response latency, and maintain scalable frontend architectures while building production-grade web applications used by thousands of concurrent users across multiple responsive platforms. A single logical mistake involving async/await flows, event propagation, conditional rendering, or undefined state management can create difficult-to-trace bugs that significantly affect application stability, accessibility compliance, rendering efficiency, and overall user experience under real-world production environments.",
+
+  "Advanced Frontend Development requires deep understanding of JavaScript execution context, browser event loops, asynchronous programming patterns, dynamic DOM manipulation, memory optimization strategies, and responsive rendering behavior across different devices + browsers. Developers regularly work with complex event-driven systems, reusable UI architecture, accessibility standards, state synchronization logic, optimized rendering pipelines, and performance-focused debugging techniques while ensuring scalable applications remain maintainable, visually consistent, and technically reliable during continuous feature deployments and high-traffic usage scenarios.",
+
+  "Professional developers often solve challenging problems involving asynchronous API integrations, browser compatibility issues, inefficient rendering cycles, recursive state updates, localStorage persistence systems, accessibility optimization, and responsive layout inconsistencies while maintaining modular project architecture and reusable frontend logic. Efficient engineering workflows require developers to analyze stack traces, inspect network activity, monitor performance bottlenecks, optimize rendering behavior, and debug unpredictable edge-case failures under strict deadlines within collaborative development environments.",
+
+  "Building scalable frontend applications involves much more than creating visually attractive interfaces because engineers must also optimize application performance, reduce unnecessary DOM updates, improve memory utilization, implement accessibility best practices, and maintain efficient state-management systems across increasingly complex user interactions. Developers regularly work with asynchronous functions, API error handling, keyboard events, conditional rendering logic, animation optimization, browser lifecycle management, and reusable component structures to create smooth and highly responsive user experiences across desktop, tablet, and mobile platforms.",
+
+  "Modern web applications depend heavily on optimized JavaScript execution, efficient browser rendering, scalable UI systems, asynchronous communication workflows, and structured application architecture to deliver fast and reliable digital experiences under varying network conditions and hardware limitations. Frontend Engineers continuously debug event-listener conflicts, race conditions, callback execution errors, delayed API responses, rendering bottlenecks, and inconsistent responsive behavior while improving maintainability, scalability, and long-term performance stability inside large-scale production environments.",
+
+  "Developers building enterprise-level applications frequently manage dynamic dashboards, authentication systems, protected routing flows, asynchronous state synchronization, browser-storage mechanisms, reusable utility functions, and complex event-driven interactions while maintaining accessibility standards and responsive user-interface consistency across multiple devices. Strong debugging ability, efficient keyboard usage, logical reasoning, and structured code organization are essential skills for engineers working on large modern applications with real-time interactivity and high-performance frontend requirements.",
+
+  "Frontend optimization requires engineers to minimize expensive rendering operations, reduce layout-shift problems, improve animation smoothness, optimize event-handling performance, and carefully structure reusable application logic to ensure efficient browser execution across low-end and high-performance devices. Developers regularly inspect rendering pipelines, analyze runtime execution patterns, debug asynchronous failures, optimize resource-loading behavior, and improve application scalability using maintainable coding practices and performance-focused architectural decisions under real-world development constraints.",
+
+  "Large-scale JavaScript applications often involve complex asynchronous workflows, reusable state-management patterns, API communication layers, conditional rendering systems, accessibility-focused interface design, and responsive layout structures that must remain stable across multiple browsers and devices simultaneously. Developers solving advanced frontend problems frequently debug recursive execution loops, stale-state updates, memory leaks, event-listener duplication issues, and delayed rendering synchronization while maintaining optimized application behavior under high user interaction loads and continuous deployment cycles.",
+
+  "Efficient Software Engineers continuously improve frontend architecture, debugging workflows, application scalability, rendering optimization strategies, and code maintainability by building increasingly challenging projects and solving practical real-world problems through consistent hands-on development experience. Strong understanding of JavaScript fundamentals, browser execution behavior, asynchronous operations, responsive design systems, and performance optimization techniques helps developers create reliable scalable applications while preparing for technical interviews, coding assessments, internships, and production-level engineering responsibilities within the technology industry.",
+
+  "Advanced frontend problem-solving often includes debugging unpredictable race conditions, resolving asynchronous rendering inconsistencies, optimizing application state synchronization, reducing unnecessary component re-renders, and maintaining scalable responsive layouts while handling large volumes of dynamic user interactions efficiently. Developers working on production-ready applications must balance technical performance, visual consistency, accessibility compliance, reusable architecture, and maintainable code organization while delivering stable user experiences under complex real-world engineering scenarios involving APIs, browser limitations, and evolving application requirements."
+]
+      }
+    };
+
+    // =========================================================
+    // APP STATE
+    // =========================================================
+
+    const state = {
+      started: false,
+      timeLeft: 60,
+      selectedTime: 60,
+      errors: 0,
+      totalTyped: 0,
+      currentIndex: 0,
+      difficulty: "easy",
+      intervalId: null,
+      paragraphText: ""
+    };
+
+    // =========================================================
+    // DOM ELEMENTS
+    // =========================================================
+
+    const homeScreen = document.querySelector("#homeScreen");
+    const testScreen = document.querySelector("#testScreen");
+    const resultScreen = document.querySelector("#resultScreen");
+
+    const startBtn = document.querySelector("#startBtn");
+    const restartBtn = document.querySelector("#restartBtn");
+    const backBtn = document.querySelector("#backBtn");
+
+    const tryAgainBtn = document.querySelector("#tryAgainBtn");
+    const newParagraphBtn = document.querySelector("#newParagraphBtn");
+    const resultBackBtn = document.querySelector("#resultBackBtn");
+
+    const difficultySelect =
+      document.querySelector("#difficultySelect");
+
+    const timeSelect =
+      document.querySelector("#timeSelect");
+
+    const paragraphElement =
+      document.querySelector("#paragraph");
+
+    const typingInput =
+      document.querySelector("#typingInput");
+
+    const timerElement =
+      document.querySelector("#timer");
+
+    const wpmElement =
+      document.querySelector("#wpm");
+
+    const accuracyElement =
+      document.querySelector("#accuracy");
+
+    const errorsElement =
+      document.querySelector("#errors");
+
+    const finalWPM =
+      document.querySelector("#finalWPM");
+
+    const finalAccuracy =
+      document.querySelector("#finalAccuracy");
+
+    const finalCharacters =
+      document.querySelector("#finalCharacters");
+
+    const finalErrors =
+      document.querySelector("#finalErrors");
+
+    const performanceLabel =
+      document.querySelector("#performanceLabel");
+
+    const bestScoreElement =
+      document.querySelector("#bestScore");
+
+    // =========================================================
+    // LOAD BEST SCORE
+    // =========================================================
+
+    function loadBestScore() {
+
+      const bestScore =
+        localStorage.getItem("bestWPM") || 0;
+
+      bestScoreElement.textContent = bestScore;
+    }
+
+    // =========================================================
+    // RANDOM PARAGRAPH
+    // =========================================================
+
+    function getRandomParagraph() {
+
+      const difficulty =
+        state.difficulty;
+
+      const selectedTime =
+        state.selectedTime;
+
+      const paragraphList =
+        paragraphs[difficulty][selectedTime];
+
+      const randomIndex =
+        Math.floor(Math.random() * paragraphList.length);
+
+      return paragraphList[randomIndex];
+    }
+
+    // =========================================================
+    // RENDER PARAGRAPH
+    // =========================================================
+
+    function renderParagraph() {
+
+      paragraphElement.innerHTML = "";
+
+      state.paragraphText.split("").forEach(character => {
+
+        const span =
+          document.createElement("span");
+
+        span.textContent = character;
+
+        paragraphElement.appendChild(span);
+      });
+
+      highlightText();
+    }
+
+    // =========================================================
+    // HIGHLIGHT TYPING
+    // =========================================================
+
+    function highlightText() {
+
+      const spans =
+        paragraphElement.querySelectorAll("span");
+
+      const typedText =
+        typingInput.value;
+
+      state.errors = 0;
+
+      spans.forEach((span, index) => {
+
+        const typedCharacter =
+          typedText[index];
+
+        span.classList.remove(
+          "correct",
+          "wrong",
+          "current"
+        );
+
+        if (typedCharacter == null) {
+
+          if (index === typedText.length) {
+
+            span.classList.add("current");
+          }
+
+        } else if (
+          typedCharacter === span.textContent
+        ) {
+
+          span.classList.add("correct");
+
+        } else {
+
+          span.classList.add("wrong");
+
+          state.errors++;
+        }
+      });
+
+      errorsElement.textContent =
+        state.errors;
+    }
+
+    // =========================================================
+    // CALCULATE WPM
+    // =========================================================
+
+    function calculateWPM() {
+
+      const timeElapsed =
+        (state.selectedTime - state.timeLeft) / 60;
+
+      if (timeElapsed <= 0) return 0;
+
+      const correctCharacters =
+        state.totalTyped - state.errors;
+
+      const wordsTyped =
+        correctCharacters / 5;
+
+      return Math.max(
+        0,
+        Math.round(wordsTyped / timeElapsed)
+      );
+    }
+
+    // =========================================================
+    // CALCULATE ACCURACY
+    // =========================================================
+
+    function calculateAccuracy() {
+
+      if (state.totalTyped === 0) {
+
+        return 100;
+      }
+
+      return Math.round(
+        (
+          (state.totalTyped - state.errors) /
+          state.totalTyped
+        ) * 100
+      );
+    }
+
+    // =========================================================
+    // UPDATE LIVE STATS
+    // =========================================================
+
+    function updateStats() {
+
+      const currentWPM =
+        calculateWPM();
+
+      const currentAccuracy =
+        calculateAccuracy();
+
+      wpmElement.textContent =
+        currentWPM;
+
+      accuracyElement.textContent =
+        currentAccuracy + "%";
+
+      errorsElement.textContent =
+        state.errors;
+
+      timerElement.textContent =
+        state.timeLeft;
+
+      if (state.timeLeft <= 10) {
+
+        timerElement.classList.remove(
+          "text-blue-400"
+        );
+
+        timerElement.classList.add(
+          "text-red-500"
+        );
+
+      } else {
+
+        timerElement.classList.remove(
+          "text-red-500"
+        );
+
+        timerElement.classList.add(
+          "text-blue-400"
+        );
+      }
+    }
+
+    // =========================================================
+    // START TIMER
+    // =========================================================
+
+    function startTimer() {
+
+      state.intervalId =
+        setInterval(() => {
+
+          state.timeLeft--;
+
+          updateStats();
+
+          if (state.timeLeft <= 0) {
+
+            endTest();
+          }
+
+        }, 1000);
+    }
+
+    // =========================================================
+    // START TEST
+    // =========================================================
+
+    function startTest() {
+
+      clearInterval(state.intervalId);
+
+      homeScreen.classList.add("hidden");
+      resultScreen.classList.add("hidden");
+      testScreen.classList.remove("hidden");
+
+      state.started = false;
+
+      state.selectedTime =
+        Number(timeSelect.value);
+
+      state.timeLeft =
+        state.selectedTime;
+
+      state.errors = 0;
+
+      state.totalTyped = 0;
+
+      state.currentIndex = 0;
+
+      state.difficulty =
+        difficultySelect.value;
+
+      state.paragraphText =
+        getRandomParagraph();
+
+      typingInput.value = "";
+
+      renderParagraph();
+
+      updateStats();
+
+      typingInput.focus();
+    }
+
+    // =========================================================
+    // END TEST
+    // =========================================================
+
+    function endTest() {
+
+      clearInterval(state.intervalId);
+
+      typingInput.blur();
+
+      const finalWPMValue =
+        calculateWPM();
+
+      const finalAccuracyValue =
+        calculateAccuracy();
+
+      finalWPM.textContent =
+        finalWPMValue;
+
+      finalAccuracy.textContent =
+        finalAccuracyValue + "%";
+
+      finalCharacters.textContent =
+        state.totalTyped;
+
+      finalErrors.textContent =
+        state.errors;
+
+      performanceLabel.textContent =
+        getPerformanceLabel(finalWPMValue);
+
+      saveBestScore(finalWPMValue);
+
+      testScreen.classList.add("hidden");
+
+      resultScreen.classList.remove("hidden");
+    }
+
+    // =========================================================
+    // PERFORMANCE LABEL
+    // =========================================================
+
+    function getPerformanceLabel(wpm) {
+
+      if (wpm < 20) return "Beginner";
+
+      if (wpm < 35) return "Average";
+
+      if (wpm < 50) return "Good";
+
+      if (wpm < 70) return "Excellent";
+
+      return "Pro";
+    }
+
+    // =========================================================
+    // SAVE BEST SCORE
+    // =========================================================
+
+    function saveBestScore(currentWPM) {
+
+      const bestScore =
+        Number(localStorage.getItem("bestWPM")) || 0;
+
+      if (currentWPM > bestScore) {
+
+        localStorage.setItem(
+          "bestWPM",
+          currentWPM
+        );
+
+        bestScoreElement.textContent =
+          currentWPM;
+      }
+    }
+
+    // =========================================================
+    // RESTART TEST
+    // =========================================================
+
+    function restartTest() {
+
+      clearInterval(state.intervalId);
+
+      startTest();
+    }
+
+    // =========================================================
+    // TYPING INPUT EVENT
+    // =========================================================
+
+    typingInput.addEventListener("input", () => {
+
+      if (!state.started) {
+
+        state.started = true;
+
+        startTimer();
+      }
+
+      state.totalTyped =
+        typingInput.value.length;
+
+      highlightText();
+
+      updateStats();
+
+      if (
+        typingInput.value ===
+        state.paragraphText
+      ) {
+
+        endTest();
+      }
+    });
+
+    // =========================================================
+    // BUTTON EVENTS
+    // =========================================================
+
+    startBtn.addEventListener(
+      "click",
+      startTest
+    );
+
+    restartBtn.addEventListener(
+      "click",
+      restartTest
+    );
+
+    backBtn.addEventListener("click", () => {
+
+      clearInterval(state.intervalId);
+
+      testScreen.classList.add("hidden");
+
+      homeScreen.classList.remove("hidden");
+    });
+
+    tryAgainBtn.addEventListener("click", () => {
+
+      resultScreen.classList.add("hidden");
+
+      homeScreen.classList.remove("hidden");
+    });
+
+    newParagraphBtn.addEventListener(
+      "click",
+      startTest
+    );
+
+    resultBackBtn.addEventListener("click", () => {
+
+      resultScreen.classList.add("hidden");
+
+      homeScreen.classList.remove("hidden");
+    });
+
+    // =========================================================
+    // INITIAL LOAD
+    // =========================================================
+
+    loadBestScore();
+
+  </script>
+
+</body>
+</html>
