@@ -75,160 +75,19 @@
    RESPONSIVE DESIGN
 ========================================================= */
 
-/* Small Laptops */
-
-@media (max-width: 1024px) {
-
-  h1 {
-    font-size: 4rem !important;
-  }
-
+/* Small Laptops and larger screens - minimal adjustments */
+@media (min-width: 1024px) {
   #paragraph {
     font-size: 1.1rem;
     line-height: 2.2rem;
   }
 }
 
-/* Tablets */
-
-@media (max-width: 768px) {
-
-  body {
-    padding: 16px;
-  }
-
-  h1 {
-    font-size: 3rem !important;
-    line-height: 1.1;
-  }
-
-  section {
-    padding: 24px !important;
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  #paragraph {
-    font-size: 1rem;
-    line-height: 2rem;
-    padding: 20px;
-    min-height: 220px;
-  }
-
-  textarea {
-    height: 140px !important;
-    font-size: 1rem !important;
-    padding: 16px !important;
-  }
-
-  button {
-    width: 100%;
-  }
-
-  .flex.flex-wrap.gap-4 {
-    flex-direction: column;
-  }
-
-  #finalWPM,
-  #finalAccuracy,
-  #finalCharacters,
-  #finalErrors {
-    font-size: 2rem;
-  }
-
-  #performanceLabel {
-    font-size: 2.5rem;
-  }
-}
-
-/* Mobile Devices */
-
-@media (max-width: 480px) {
-
-  body {
-    padding: 10px;
-  }
-
-  h1 {
-    font-size: 2.2rem !important;
-  }
-
-  p {
-    font-size: 0.9rem;
-  }
-
-  section {
-    padding: 18px !important;
-    border-radius: 20px !important;
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  #paragraph {
-    font-size: 0.92rem;
-    line-height: 1.8rem;
-    padding: 16px;
-    min-height: 200px;
-  }
-
-  textarea {
-    height: 120px !important;
-    font-size: 0.95rem !important;
-    padding: 14px !important;
-  }
-
-  #timer,
-  #wpm,
-  #accuracy,
-  #errors {
-    font-size: 1.8rem !important;
-  }
-
-  #finalWPM,
-  #finalAccuracy,
-  #finalCharacters,
-  #finalErrors {
-    font-size: 1.7rem !important;
-  }
-
-  #performanceLabel {
-    font-size: 2rem !important;
-  }
-
-  button {
-    width: 100%;
-    padding: 14px;
-    font-size: 0.95rem;
-  }
-
-  select {
-    font-size: 0.95rem;
-    padding: 14px !important;
-  }
-}
-
-/* Extra Small Phones */
-
+/* Extra small phones */
 @media (max-width: 360px) {
-
-  h1 {
-    font-size: 1.8rem !important;
-  }
-
   #paragraph {
     font-size: 0.82rem;
     line-height: 1.5rem;
-  }
-
-  #timer,
-  #wpm,
-  #accuracy,
-  #errors {
-    font-size: 1.5rem !important;
   }
 }
 
@@ -279,9 +138,9 @@ select {
 
 </head>
 
-<body class="min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen flex items-center justify-center p-2 sm:p-4 md:p-6">
 
-  <div class="w-full max-w-6xl">
+  <div class="w-full max-w-7xl px-2 sm:px-4">
 
     <!-- ========================================================= -->
     <!-- HOME SCREEN -->
@@ -289,29 +148,29 @@ select {
 
     <section
       id="homeScreen"
-      class="bg-slate-900 border border-slate-800 rounded-3xl p-8 md:p-12 shadow-2xl"
+      class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 md:p-10 lg:p-12 shadow-2xl"
     >
 
       <div class="text-center">
 
-        <h1 class="text-5xl md:text-7xl font-bold mb-4">
+        <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4">
           TypeRush
         </h1>
 
-        <p class="text-slate-400 text-lg md:text-xl mb-12">
+        <p class="text-slate-400 text-base sm:text-lg md:text-xl mb-8 sm:mb-10 lg:mb-12">
           Improve your typing speed with live feedback and real-time analysis.
         </p>
 
         <!-- Difficulty -->
-        <div class="max-w-md mx-auto mb-6 text-left">
+        <div class="max-w-md mx-auto mb-4 sm:mb-6 text-left">
 
-          <label class="block mb-3 text-slate-300 font-medium">
+          <label class="block mb-2 sm:mb-3 text-slate-300 font-medium text-sm sm:text-base">
             Select Difficulty
           </label>
 
           <select
             id="difficultySelect"
-            class="w-full bg-slate-800 border border-slate-700 rounded-2xl p-4 outline-none focus:border-blue-500"
+            class="w-full bg-slate-800 border border-slate-700 rounded-2xl p-3 sm:p-4 outline-none focus:border-blue-500 text-sm sm:text-base"
           >
             <option value="easy">Easy</option>
             <option value="medium">Medium</option>
@@ -321,15 +180,15 @@ select {
         </div>
 
         <!-- Timer -->
-        <div class="max-w-md mx-auto mb-10 text-left">
+        <div class="max-w-md mx-auto mb-6 sm:mb-8 lg:mb-10 text-left">
 
-          <label class="block mb-3 text-slate-300 font-medium">
+          <label class="block mb-2 sm:mb-3 text-slate-300 font-medium text-sm sm:text-base">
             Select Time
           </label>
 
           <select
             id="timeSelect"
-            class="w-full bg-slate-800 border border-slate-700 rounded-2xl p-4 outline-none focus:border-blue-500"
+            class="w-full bg-slate-800 border border-slate-700 rounded-2xl p-3 sm:p-4 outline-none focus:border-blue-500 text-sm sm:text-base"
           >
             <option value="30">30 Seconds</option>
             <option value="60" selected>60 Seconds</option>
@@ -341,18 +200,18 @@ select {
         <!-- Start Button -->
         <button
           id="startBtn"
-          class="bg-blue-600 hover:bg-blue-700 transition px-10 py-4 rounded-2xl text-lg font-semibold"
+          class="bg-blue-600 hover:bg-blue-700 transition px-8 sm:px-10 py-3 sm:py-4 rounded-2xl text-base sm:text-lg font-semibold w-full sm:w-auto"
         >
           Start Test
         </button>
 
         <!-- Best Score -->
-        <div class="mt-12 text-slate-400 text-lg">
+        <div class="mt-8 sm:mt-10 lg:mt-12 text-slate-400 text-base sm:text-lg">
 
           Best WPM:
           <span
             id="bestScore"
-            class="text-green-400 font-bold text-2xl"
+            class="text-green-400 font-bold text-xl sm:text-2xl"
           >
             0
           </span>
@@ -369,66 +228,66 @@ select {
 
     <section
       id="testScreen"
-      class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-10 shadow-2xl"
+      class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-4 sm:p-6 md:p-8 lg:p-10 shadow-2xl"
     >
 
       <!-- Stats -->
-      <div class="stats-grid grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="stats-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
 
-        <div class="bg-slate-800 rounded-2xl p-5 text-center card-transition">
+        <div class="bg-slate-800 rounded-2xl p-3 sm:p-4 md:p-5 text-center card-transition">
 
-          <p class="text-slate-400 mb-2 text-sm">
+          <p class="text-slate-400 mb-1 sm:mb-2 text-xs sm:text-sm">
             Time Left
           </p>
 
           <h2
             id="timer"
-            class="text-4xl font-bold text-blue-400"
+            class="text-3xl sm:text-4xl font-bold text-blue-400"
           >
             60
           </h2>
 
         </div>
 
-        <div class="bg-slate-800 rounded-2xl p-5 text-center card-transition">
+        <div class="bg-slate-800 rounded-2xl p-3 sm:p-4 md:p-5 text-center card-transition">
 
-          <p class="text-slate-400 mb-2 text-sm">
+          <p class="text-slate-400 mb-1 sm:mb-2 text-xs sm:text-sm">
             WPM
           </p>
 
           <h2
             id="wpm"
-            class="text-4xl font-bold"
+            class="text-3xl sm:text-4xl font-bold"
           >
             0
           </h2>
 
         </div>
 
-        <div class="bg-slate-800 rounded-2xl p-5 text-center card-transition">
+        <div class="bg-slate-800 rounded-2xl p-3 sm:p-4 md:p-5 text-center card-transition">
 
-          <p class="text-slate-400 mb-2 text-sm">
+          <p class="text-slate-400 mb-1 sm:mb-2 text-xs sm:text-sm">
             Accuracy
           </p>
 
           <h2
             id="accuracy"
-            class="text-4xl font-bold"
+            class="text-3xl sm:text-4xl font-bold"
           >
             100%
           </h2>
 
         </div>
 
-        <div class="bg-slate-800 rounded-2xl p-5 text-center card-transition">
+        <div class="bg-slate-800 rounded-2xl p-3 sm:p-4 md:p-5 text-center card-transition">
 
-          <p class="text-slate-400 mb-2 text-sm">
+          <p class="text-slate-400 mb-1 sm:mb-2 text-xs sm:text-sm">
             Errors
           </p>
 
           <h2
             id="errors"
-            class="text-4xl font-bold text-red-400"
+            class="text-3xl sm:text-4xl font-bold text-red-400"
           >
             0
           </h2>
@@ -440,29 +299,29 @@ select {
       <!-- Paragraph -->
       <div
         id="paragraph"
-        class="mono bg-slate-950 border border-slate-800 rounded-2xl p-6 text-lg md:text-xl leading-10 min-h-[250px]"
+        class="mono bg-slate-950 border border-slate-800 rounded-2xl p-4 sm:p-5 md:p-6 text-base sm:text-lg md:text-xl leading-6 sm:leading-8 md:leading-10 min-h-[200px] sm:min-h-[220px] md:min-h-[250px]"
       ></div>
 
       <!-- Input -->
       <textarea
         id="typingInput"
-        class="w-full mt-6 bg-slate-800 border border-slate-700 rounded-2xl p-5 outline-none focus:border-blue-500 resize-none h-40 text-lg"
+        class="w-full mt-4 sm:mt-6 bg-slate-800 border border-slate-700 rounded-2xl p-3 sm:p-4 md:p-5 outline-none focus:border-blue-500 resize-none h-32 sm:h-36 md:h-40 text-base sm:text-lg"
         placeholder="Start typing here..."
       ></textarea>
 
       <!-- Buttons -->
-      <div class="flex flex-wrap gap-4 mt-6">
+      <div class="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mt-4 sm:mt-6">
 
         <button
           id="restartBtn"
-          class="bg-red-500 hover:bg-red-600 transition px-6 py-3 rounded-xl font-semibold"
+          class="bg-red-500 hover:bg-red-600 transition px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold w-full sm:w-auto"
         >
           Restart
         </button>
 
         <button
           id="backBtn"
-          class="bg-slate-700 hover:bg-slate-600 transition px-6 py-3 rounded-xl font-semibold"
+          class="bg-slate-700 hover:bg-slate-600 transition px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold w-full sm:w-auto"
         >
           Back
         </button>
@@ -477,74 +336,74 @@ select {
 
     <section
       id="resultScreen"
-      class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-8 md:p-12 shadow-2xl text-center"
+      class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 md:p-10 lg:p-12 shadow-2xl text-center"
     >
 
-      <h2 class="text-5xl font-bold mb-3">
+      <h2 class="text-4xl sm:text-5xl font-bold mb-2 sm:mb-3">
         Test Complete
       </h2>
 
-      <p class="text-slate-400 text-lg mb-12">
+      <p class="text-slate-400 text-base sm:text-lg mb-8 sm:mb-10 lg:mb-12">
         Your typing performance analysis
       </p>
 
       <!-- Result Cards -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mb-10">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 mb-8 sm:mb-10">
 
-        <div class="bg-slate-800 rounded-2xl p-5">
+        <div class="bg-slate-800 rounded-2xl p-4 sm:p-5">
 
-          <p class="text-slate-400 mb-2">
+          <p class="text-slate-400 mb-1 sm:mb-2 text-sm sm:text-base">
             Final WPM
           </p>
 
           <h3
             id="finalWPM"
-            class="text-4xl font-bold text-green-400"
+            class="text-3xl sm:text-4xl font-bold text-green-400"
           >
             0
           </h3>
 
         </div>
 
-        <div class="bg-slate-800 rounded-2xl p-5">
+        <div class="bg-slate-800 rounded-2xl p-4 sm:p-5">
 
-          <p class="text-slate-400 mb-2">
+          <p class="text-slate-400 mb-1 sm:mb-2 text-sm sm:text-base">
             Accuracy
           </p>
 
           <h3
             id="finalAccuracy"
-            class="text-4xl font-bold"
+            class="text-3xl sm:text-4xl font-bold"
           >
             0%
           </h3>
 
         </div>
 
-        <div class="bg-slate-800 rounded-2xl p-5">
+        <div class="bg-slate-800 rounded-2xl p-4 sm:p-5">
 
-          <p class="text-slate-400 mb-2">
+          <p class="text-slate-400 mb-1 sm:mb-2 text-sm sm:text-base">
             Characters
           </p>
 
           <h3
             id="finalCharacters"
-            class="text-4xl font-bold"
+            class="text-3xl sm:text-4xl font-bold"
           >
             0
           </h3>
 
         </div>
 
-        <div class="bg-slate-800 rounded-2xl p-5">
+        <div class="bg-slate-800 rounded-2xl p-4 sm:p-5">
 
-          <p class="text-slate-400 mb-2">
+          <p class="text-slate-400 mb-1 sm:mb-2 text-sm sm:text-base">
             Errors
           </p>
 
           <h3
             id="finalErrors"
-            class="text-4xl font-bold text-red-400"
+            class="text-3xl sm:text-4xl font-bold text-red-400"
           >
             0
           </h3>
@@ -554,15 +413,15 @@ select {
       </div>
 
       <!-- Performance -->
-      <div class="mb-12">
+      <div class="mb-8 sm:mb-10 lg:mb-12">
 
-        <p class="text-slate-400 mb-3">
+        <p class="text-slate-400 mb-2 sm:mb-3 text-sm sm:text-base">
           Performance Level
         </p>
 
         <h3
           id="performanceLabel"
-          class="text-5xl font-bold text-yellow-400"
+          class="text-4xl sm:text-5xl font-bold text-yellow-400"
         >
           Beginner
         </h3>
@@ -570,25 +429,25 @@ select {
       </div>
 
       <!-- Buttons -->
-      <div class="flex flex-wrap justify-center gap-4">
+      <div class="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
 
         <button
           id="tryAgainBtn"
-          class="bg-blue-600 hover:bg-blue-700 transition px-6 py-3 rounded-xl font-semibold"
+          class="bg-blue-600 hover:bg-blue-700 transition px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold w-full sm:w-auto"
         >
           Try Again
         </button>
 
         <button
           id="newParagraphBtn"
-          class="bg-slate-700 hover:bg-slate-600 transition px-6 py-3 rounded-xl font-semibold"
+          class="bg-slate-700 hover:bg-slate-600 transition px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold w-full sm:w-auto"
         >
           New Paragraph
         </button>
 
         <button
           id="resultBackBtn"
-          class="bg-red-500 hover:bg-red-600 transition px-6 py-3 rounded-xl font-semibold"
+          class="bg-red-500 hover:bg-red-600 transition px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold w-full sm:w-auto"
         >
           Back Home
         </button>
