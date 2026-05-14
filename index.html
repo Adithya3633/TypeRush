@@ -71,6 +71,209 @@
     .card-transition {
       transition: all 0.3s ease;
     }
+    /* =========================================================
+   RESPONSIVE DESIGN
+========================================================= */
+
+/* Small Laptops */
+
+@media (max-width: 1024px) {
+
+  h1 {
+    font-size: 4rem !important;
+  }
+
+  #paragraph {
+    font-size: 1.1rem;
+    line-height: 2.2rem;
+  }
+}
+
+/* Tablets */
+
+@media (max-width: 768px) {
+
+  body {
+    padding: 16px;
+  }
+
+  h1 {
+    font-size: 3rem !important;
+    line-height: 1.1;
+  }
+
+  section {
+    padding: 24px !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #paragraph {
+    font-size: 1rem;
+    line-height: 2rem;
+    padding: 20px;
+    min-height: 220px;
+  }
+
+  textarea {
+    height: 140px !important;
+    font-size: 1rem !important;
+    padding: 16px !important;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .flex.flex-wrap.gap-4 {
+    flex-direction: column;
+  }
+
+  #finalWPM,
+  #finalAccuracy,
+  #finalCharacters,
+  #finalErrors {
+    font-size: 2rem;
+  }
+
+  #performanceLabel {
+    font-size: 2.5rem;
+  }
+}
+
+/* Mobile Devices */
+
+@media (max-width: 480px) {
+
+  body {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 2.2rem !important;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+
+  section {
+    padding: 18px !important;
+    border-radius: 20px !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #paragraph {
+    font-size: 0.92rem;
+    line-height: 1.8rem;
+    padding: 16px;
+    min-height: 200px;
+  }
+
+  textarea {
+    height: 120px !important;
+    font-size: 0.95rem !important;
+    padding: 14px !important;
+  }
+
+  #timer,
+  #wpm,
+  #accuracy,
+  #errors {
+    font-size: 1.8rem !important;
+  }
+
+  #finalWPM,
+  #finalAccuracy,
+  #finalCharacters,
+  #finalErrors {
+    font-size: 1.7rem !important;
+  }
+
+  #performanceLabel {
+    font-size: 2rem !important;
+  }
+
+  button {
+    width: 100%;
+    padding: 14px;
+    font-size: 0.95rem;
+  }
+
+  select {
+    font-size: 0.95rem;
+    padding: 14px !important;
+  }
+}
+
+/* Extra Small Phones */
+
+@media (max-width: 360px) {
+
+  h1 {
+    font-size: 1.8rem !important;
+  }
+
+  #paragraph {
+    font-size: 0.82rem;
+    line-height: 1.5rem;
+  }
+
+  #timer,
+  #wpm,
+  #accuracy,
+  #errors {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* =========================================================
+   BETTER INTERACTIONS
+========================================================= */
+
+button,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button,
+textarea,
+select,
+.card-transition {
+  transition: all 0.25s ease;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Better textarea on mobile */
+
+textarea {
+  touch-action: manipulation;
+}
+
+/* Prevent zoom on iPhone */
+
+input,
+textarea,
+select {
+  font-size: 16px;
+}
 
   </style>
 
@@ -170,7 +373,7 @@
     >
 
       <!-- Stats -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="stats-grid grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
 
         <div class="bg-slate-800 rounded-2xl p-5 text-center card-transition">
 
