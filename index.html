@@ -133,14 +133,111 @@ textarea,
 select {
   font-size: 16px;
 }
+/* =========================================================
+   MOBILE RESPONSIVE FIXES
+========================================================= */
 
+@media (max-width: 768px) {
+
+  body {
+    display: block;
+  }
+
+  #homeScreen,
+  #testScreen,
+  #resultScreen {
+    border-radius: 20px;
+    padding: 20px;
+  }
+
+  /* Heading */
+  h1 {
+    font-size: 2.5rem !important;
+    line-height: 1.1;
+  }
+
+  /* Description */
+  #homeScreen p {
+    font-size: 0.95rem;
+    line-height: 1.5rem;
+  }
+
+  /* Stats Grid */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+  }
+
+  /* Stats cards */
+  .stats-grid div {
+    padding: 14px;
+  }
+
+  .stats-grid h2 {
+    font-size: 2rem !important;
+  }
+
+  /* Paragraph */
+  #paragraph {
+    font-size: 0.95rem;
+    line-height: 2rem;
+    min-height: 180px;
+    padding: 18px;
+    overflow-wrap: break-word;
+  }
+
+  /* Textarea */
+  #typingInput {
+    height: 140px;
+    font-size: 1rem;
+    padding: 16px;
+  }
+
+  /* Buttons */
+  button {
+    width: 100%;
+  }
+
+  /* Result screen */
+  #resultScreen h2 {
+    font-size: 2.3rem;
+  }
+
+  #performanceLabel {
+    font-size: 2.2rem !important;
+  }
+
+}
+
+/* Extra Small Devices */
+
+@media (max-width: 480px) {
+
+  h1 {
+    font-size: 2rem !important;
+  }
+
+  #paragraph {
+    font-size: 0.88rem;
+    line-height: 1.8rem;
+  }
+
+  .stats-grid h2 {
+    font-size: 1.7rem !important;
+  }
+
+  #typingInput {
+    height: 120px;
+  }
+
+}
   </style>
 
 </head>
 
-<body class="min-h-screen flex items-center justify-center p-2 sm:p-4 md:p-6">
+<body class="bg-slate-950 min-h-screen overflow-x-hidden">
 
-  <div class="w-full max-w-7xl px-2 sm:px-4">
+  <div class="w-full max-w-6xl mx-auto p-3 sm:p-4 md:p-6">
 
     <!-- ========================================================= -->
     <!-- HOME SCREEN -->
@@ -965,43 +1062,49 @@ select {
     // START TEST
     // =========================================================
 
-    function startTest() {
+   function startTest() {
 
-      clearInterval(state.intervalId);
+  clearInterval(state.intervalId);
 
-      homeScreen.classList.add("hidden");
-      resultScreen.classList.add("hidden");
-      testScreen.classList.remove("hidden");
+  homeScreen.classList.add("hidden");
+  resultScreen.classList.add("hidden");
+  testScreen.classList.remove("hidden");
 
-      state.started = false;
+  state.started = false;
 
-      state.selectedTime =
-        Number(timeSelect.value);
+  state.selectedTime =
+    Number(timeSelect.value);
 
-      state.timeLeft =
-        state.selectedTime;
+  state.timeLeft =
+    state.selectedTime;
 
-      state.errors = 0;
+  state.errors = 0;
 
-      state.totalTyped = 0;
+  state.totalTyped = 0;
 
-      state.currentIndex = 0;
+  state.currentIndex = 0;
 
-      state.difficulty =
-        difficultySelect.value;
+  state.difficulty =
+    difficultySelect.value;
 
-      state.paragraphText =
-        getRandomParagraph();
+  state.paragraphText =
+    getRandomParagraph();
 
-      typingInput.value = "";
+  typingInput.value = "";
 
-      renderParagraph();
+  renderParagraph();
 
-      updateStats();
+  updateStats();
 
-      typingInput.focus();
-    }
+  typingInput.focus();
 
+  setTimeout(() => {
+    typingInput.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+  }, 300);
+}
     // =========================================================
     // END TEST
     // =========================================================
