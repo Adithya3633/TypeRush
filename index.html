@@ -231,6 +231,16 @@ select {
   }
 
 }
+
+#testScreen,
+#resultScreen {
+  display: none;
+}
+
+#testScreen.showScreen,
+#resultScreen.showScreen {
+  display: block;
+}
   </style>
 
 </head>
@@ -1066,9 +1076,9 @@ select {
 
   clearInterval(state.intervalId);
 
-  homeScreen.classList.add("hidden");
-  resultScreen.classList.add("hidden");
-  testScreen.classList.remove("hidden");
+  homeScreen.style.display = "none";
+  resultScreen.classList.remove("showScreen");
+  testScreen.classList.add("showScreen");
 
   state.started = false;
 
@@ -1138,9 +1148,9 @@ select {
 
       saveBestScore(finalWPMValue);
 
-      testScreen.classList.add("hidden");
+      testScreen.classList.remove("showScreen");
 
-      resultScreen.classList.remove("hidden");
+      resultScreen.classList.add("showScreen");
     }
 
     // =========================================================
@@ -1239,16 +1249,16 @@ select {
 
       clearInterval(state.intervalId);
 
-      testScreen.classList.add("hidden");
+      testScreen.classList.remove("showScreen");
 
-      homeScreen.classList.remove("hidden");
+      homeScreen.style.display = "block";
     });
 
     tryAgainBtn.addEventListener("click", () => {
 
-      resultScreen.classList.add("hidden");
+      resultScreen.classList.remove("showScreen");
 
-      homeScreen.classList.remove("hidden");
+      homeScreen.style.display = "block";
     });
 
     newParagraphBtn.addEventListener(
@@ -1258,9 +1268,9 @@ select {
 
     resultBackBtn.addEventListener("click", () => {
 
-      resultScreen.classList.add("hidden");
+      resultScreen.classList.remove("showScreen");
 
-      homeScreen.classList.remove("hidden");
+      homeScreen.style.display = "block";
     });
 
     // =========================================================
